@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>닥터독(Dr. Dog) - 반려견 증상 자가진단 서비스</title>
+  <!-- Google Fonts: Outfit for English & UI, Noto Sans KR for Korean -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+  <div class="app-container">
+    
+    <!-- 1. HOME SCREEN -->
+    <section id="screen-home" class="screen active">
+      <div class="brand-header">
+        <span class="logo-emoji">🐕🩺</span>
+        <h1 class="brand-title">Dr. Dog</h1>
+        <p class="brand-subtitle">반려견 증상 자가진단 서비스</p>
+      </div>
+      
+      <div class="home-hero">
+        <div class="hero-illustration">
+          <!-- Main welcoming dog graphic -->
+          <div class="cute-dog-graphic">
+            <div class="dog-ear left"></div>
+            <div class="dog-ear right"></div>
+            <div class="dog-face">
+              <div class="dog-eye left"></div>
+              <div class="dog-eye right"></div>
+              <div class="dog-nose"></div>
+              <div class="dog-mouth"></div>
+            </div>
+          </div>
+        </div>
+        <p class="hero-text">
+          우리 아이가 평소와 다르게 아파 보이나요?<br>
+          증상을 입력해 예상 질병과 즉각 대처법을 빠르게 확인하세요.
+        </p>
+      </div>
+
+      <div class="screen-footer">
+        <button id="btn-start" class="btn btn-primary btn-large">진단 시작하기</button>
+        <p class="disclaimer-text">※ 이 서비스는 의학적 진단을 대체하지 않습니다.</p>
+      </div>
+    </section>
+
+    <!-- 2. BASIC INFO INPUT SCREEN -->
+    <section id="screen-info" class="screen">
+      <div class="screen-header">
+        <button class="btn-back" data-target="screen-home">
+          <svg class="chevron-left" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <div class="progress-bar-container"><div class="progress-bar" style="width: 25%;"></div></div>
+        <span class="step-indicator">1 / 4</span>
+      </div>
+
+      <div class="screen-content">
+        <h2 class="section-title">아이의 기본 정보를 알려주세요</h2>
+        <p class="section-desc">나이와 몸무게는 더욱 정확한 진단에 기여합니다.</p>
+
+        <!-- 품종 입력 -->
+        <div class="form-group autocomplete-container">
+          <label class="form-label" for="breed-search">품종 <span class="required">*</span></label>
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="breed-search" placeholder="품종명을 검색해 보세요 (예: 말티즈)" autocomplete="off">
+            <button id="btn-clear-breed" class="btn-clear hidden" type="button">×</button>
+          </div>
+          <!-- 자동완성 목록 -->
+          <ul id="breed-autocomplete-list" class="autocomplete-list hidden"></ul>
+          <input type="hidden" id="selected-breed-id" value="">
+        </div>
+
+        <!-- 나이 입력 -->
+        <div class="form-group">
+          <label class="form-label">나이 <span class="required">*</span></label>
+          <div class="age-toggle-wrapper">
+            <button type="button" class="btn-toggle active" id="toggle-age-year">년(세)</button>
+            <button type="button" class="btn-toggle" id="toggle-age-month">개월</button>
+          </div>
+          
+          <div class="slider-container">
+            <input type="range" id="age-slider" min="0" max="20" value="3" class="custom-slider">
+            <div class="slider-values">
+              <span id="age-min-label">0세</span>
+              <span id="age-current-value" class="highlight-val">3세</span>
+              <span id="age-max-label">20세</span>
+            </div>
+          </div>
+          
+          <!-- 나이대 분류 표시 -->
+          <div class="info-badge-box">
+            현재 선택된 연령대: <strong id="age-group-badge" class="badge badge-adult">성견 (1~7세)</strong>
+          </div>
+        </div>
+
+        <!-- 몸무게 입력 -->
+        <div class="form-group">
+          <label class="form-label" for="weight-input">몸무게 (선택)</label>
+          <div class="weight-input-wrapper">
+            <input type="number" id="weight-input" min="0.1" max="100" step="0.1" placeholder="예: 5.5">
+            <span class="unit">kg</span>
+          </div>
+          <!-- 몸무게 분류 표시 -->
+          <div id="weight-group-container" class="info-badge-box hidden">
+            체형 분류: <strong id="weight-group-badge" class="badge">소형견</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-footer">
+        <button id="btn-to-symptoms" class="btn btn-primary btn-large" disabled>다음 단계로</button>
+      </div>
+    </section>
+
+    <!-- 3. SYMPTOM SELECT SCREEN -->
+    <section id="screen-symptoms" class="screen">
+      <div class="screen-header">
+        <button class="btn-back" data-target="screen-info">
+          <svg class="chevron-left" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <div class="progress-bar-container"><div class="progress-bar" style="width: 50%;"></div></div>
+        <span class="step-indicator">2 / 4</span>
+      </div>
+
+      <div class="screen-content">
+        <h2 class="section-title">어디가 아픈가요?</h2>
+        <p class="section-desc">강아지 신체 부위를 탭한 뒤 해당하는 증상을 선택하세요.</p>
+
+        <!-- SVG Dog Silhouette -->
+        <div class="silhouette-container">
+          <svg viewBox="0 0 240 220" class="dog-silhouette" id="interactive-dog-svg">
+            <defs>
+              <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="rgba(0,0,0,0.08)"/>
+              </filter>
+            </defs>
+            <!-- Dog Body Parts -->
+            <!-- 1. Head/Eyes/Nose/Ears -->
+            <path id="part-head" class="silhouette-part" filter="url(#shadow)"
+                  d="M175,35 C170,25 158,22 153,28 C148,32 148,45 155,52 C162,59 178,57 182,48 C185,41 180,35 175,35 Z 
+                     M145,45 C140,35 128,32 123,38 C118,42 118,55 125,62 C132,69 148,67 152,58 C155,51 150,45 145,45 Z 
+                     M160,35 C168,35 185,55 180,75 C178,80 170,85 160,85 C145,85 132,75 130,65 C128,50 148,35 160,35 Z" />
+            <!-- Inner face details just for styling (not clickable) -->
+            <circle cx="145" cy="62" r="3" class="dog-detail" />
+            <circle cx="168" cy="60" r="3" class="dog-detail" />
+            <polygon points="156,70 160,73 152,73" class="dog-detail" />
+            
+            <!-- 2. Mouth -->
+            <path id="part-mouth" class="silhouette-part" filter="url(#shadow)"
+                  d="M152,70 C156,73 164,73 168,70 C175,68 182,75 175,82 C168,88 152,88 145,82 C138,75 145,68 152,70 Z" />
+
+            <!-- 3. Skin / Body Back -->
+            <path id="part-skin" class="silhouette-part" filter="url(#shadow)"
+                  d="M140,80 C110,80 85,85 70,105 C60,118 68,140 85,145 C105,148 135,145 145,130 C150,115 150,95 140,80 Z" />
+
+            <!-- 4. Joints / Legs (Front Left, Front Right, Back Left, Back Right) -->
+            <g id="part-joints" class="silhouette-part" filter="url(#shadow)">
+              <!-- Back Left -->
+              <path d="M75,135 C70,135 60,145 60,165 C60,185 68,195 73,195 C78,195 78,180 76,165 C78,155 82,145 75,135 Z" />
+              <!-- Back Right -->
+              <path d="M92,138 C88,142 82,150 82,168 C82,185 88,195 93,195 C98,195 98,180 96,168 C98,158 100,148 92,138 Z" />
+              <!-- Front Left -->
+              <path d="M125,125 C120,130 115,140 115,165 C115,185 122,195 127,195 C132,195 132,180 130,165 C132,152 135,140 125,125 Z" />
+              <!-- Front Right -->
+              <path d="M140,120 C136,125 132,135 132,162 C132,182 138,192 143,192 C148,192 148,178 146,162 C148,148 152,135 140,120 Z" />
+            </g>
+
+            <!-- 5. Belly -->
+            <path id="part-belly" class="silhouette-part" filter="url(#shadow)"
+                  d="M90,140 C102,148 115,148 128,140 C132,145 125,155 110,158 C95,158 88,145 90,140 Z" />
+
+            <!-- 6. Whole Body (Tail & overall) -->
+            <path id="part-body" class="silhouette-part" filter="url(#shadow)"
+                  d="M62,110 C50,105 40,80 42,70 C44,65 50,75 56,90 C58,95 62,105 62,110 Z" />
+          </svg>
+          <div class="part-indicator-text">부위를 탭해 보세요: <span id="current-part-name">전체</span></div>
+        </div>
+
+        <!-- 부위 퀵 선택 탭 -->
+        <div class="parts-tabs">
+          <button type="button" class="btn-tab active" data-part="all">전체</button>
+          <button type="button" class="btn-tab" data-part="head">머리/귀/눈/코</button>
+          <button type="button" class="btn-tab" data-part="mouth">입/소화</button>
+          <button type="button" class="btn-tab" data-part="skin">피부</button>
+          <button type="button" class="btn-tab" data-part="joints">다리/관절</button>
+          <button type="button" class="btn-tab" data-part="belly">배/복부</button>
+          <button type="button" class="btn-tab" data-part="body">전신/기타</button>
+        </div>
+
+        <!-- 증상 그리드 리스트 -->
+        <div class="symptom-section">
+          <h3 class="subsection-title">해당하는 증상을 모두 선택하세요</h3>
+          <div id="symptoms-grid" class="symptoms-grid">
+            <!-- JavaScript dynamically inserts cards here -->
+          </div>
+        </div>
+
+        <!-- 커스텀 기타 증상 입력 -->
+        <div class="form-group custom-symptom-group">
+          <label class="form-label" for="custom-symptom-input">리스트에 없는 기타 증상 (직접 입력)</label>
+          <div class="custom-symptom-wrapper">
+            <input type="text" id="custom-symptom-input" placeholder="예: 꼬리를 자꾸 쫓아가며 돌아요">
+            <button type="button" id="btn-add-custom-symptom" class="btn btn-secondary">추가</button>
+          </div>
+          <!-- 추가된 커스텀 증상 태그 목록 -->
+          <div id="custom-symptoms-tags" class="custom-tags-container"></div>
+        </div>
+      </div>
+
+      <div class="screen-footer flex-row">
+        <div class="selected-count-badge">선택된 증상: <strong id="selected-symptoms-count">0</strong>개</div>
+        <button id="btn-to-severity" class="btn btn-primary" disabled>상세 입력으로</button>
+      </div>
+    </section>
+
+    <!-- 4. SYMPTOM SEVERITY & DURATION SCREEN -->
+    <section id="screen-severity" class="screen">
+      <div class="screen-header">
+        <button class="btn-back" data-target="screen-symptoms">
+          <svg class="chevron-left" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <div class="progress-bar-container"><div class="progress-bar" style="width: 75%;"></div></div>
+        <span class="step-indicator">3 / 4</span>
+      </div>
+
+      <div class="screen-content">
+        <h2 class="section-title">증상이 얼마나 심하고 오래됐나요?</h2>
+        <p class="section-desc">각 선택한 증상의 심각도와 지속 기간을 체크해 주세요.</p>
+
+        <!-- 선택한 증상별 상세 입력 리스트 -->
+        <div id="selected-symptoms-detail-list" class="symptoms-detail-list">
+          <!-- JS inserts detail form items here -->
+        </div>
+      </div>
+
+      <div class="screen-footer">
+        <button id="btn-to-diagnosis" class="btn btn-primary btn-large">결과 분석하기</button>
+      </div>
+    </section>
+
+    <!-- 5. DIAGNOSING LOADING SCREEN -->
+    <section id="screen-loading" class="screen">
+      <div class="loading-content">
+        <div class="pulse-loader">
+          <div class="loader-ring"></div>
+          <div class="loader-dog-emoji">🐕</div>
+        </div>
+        <h2 class="loading-title">증상을 분석하고 있습니다</h2>
+        <p class="loading-desc">강아지 품종, 나이, 입력하신 심각도 가중치를 기반으로 질병 가능성을 매칭하고 있습니다.</p>
+      </div>
+    </section>
+
+    <!-- 6. DIAGNOSIS RESULT SCREEN -->
+    <section id="screen-result" class="screen">
+      <!-- High Urgency Danger Banner (Red) -->
+      <div id="emergency-banner" class="emergency-banner hidden">
+        <div class="banner-icon">🚨</div>
+        <div class="banner-text">
+          <strong>즉각적인 대처가 필요합니다!</strong>
+          <span>위험 증상이 감지되어 24시간 동물병원 방문을 강력히 권장합니다.</span>
+        </div>
+      </div>
+
+      <div class="screen-header">
+        <h2 class="result-top-title">진단 결과 분석</h2>
+        <div class="badge-urgency-container">
+          긴급도: <strong id="urgency-badge" class="badge">주의</strong>
+        </div>
+      </div>
+
+      <div class="screen-content">
+        <!-- 기본 요약 정보 -->
+        <div class="pet-summary-card">
+          <span class="pet-icon">🐾</span>
+          <span id="result-pet-summary">말티즈 / 3세(성견) / 5kg(소형견)</span>
+        </div>
+
+        <!-- 예상 질병 목록 -->
+        <div class="result-section">
+          <h3 class="result-section-title">예상 질병 (최대 3가지)</h3>
+          <div id="disease-list-container" class="disease-list">
+            <!-- JS inserts disease list items here -->
+          </div>
+        </div>
+
+        <!-- 즉각 대처법 카드 -->
+        <div class="result-section">
+          <h3 class="result-section-title">즉각 대처법</h3>
+          <div class="coping-grid">
+            <!-- DO card -->
+            <div class="coping-card card-do">
+              <h4 class="coping-header"><span class="coping-icon">✓</span> 해야 할 행동 (DO)</h4>
+              <ul id="coping-do-list" class="coping-list">
+                <!-- JS inserts -->
+              </ul>
+            </div>
+            <!-- DONT card -->
+            <div class="coping-card card-dont">
+              <h4 class="coping-header"><span class="coping-icon">✕</span> 피해야 할 행동 (DON'T)</h4>
+              <ul id="coping-dont-list" class="coping-list">
+                <!-- JS inserts -->
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 수의사 제출용 증상 요약 정보 -->
+        <div class="result-section">
+          <h3 class="result-section-title">병원 제출용 증상 요약</h3>
+          <div class="vet-summary-box">
+            <textarea id="vet-summary-text" class="vet-textarea" readonly></textarea>
+            <button id="btn-copy-vet-summary" class="btn btn-secondary btn-full">
+              <span class="copy-icon">📋</span> 증상 요약 복사하기
+            </button>
+          </div>
+        </div>
+
+        <!-- 주변 24시 동물병원 찾기 -->
+        <div class="result-section" id="near-hospital-section">
+          <h3 class="result-section-title">주변 24시간 동물병원 찾기</h3>
+          <div class="hospital-find-box">
+            <p class="hospital-desc">긴급 상황이거나 정확한 진료가 필요한 경우, 내 주변의 24시 동물병원을 빠르게 검색해 보세요.</p>
+            <a href="https://www.google.com/maps/search/24%EC%8B%9C+%EB%8F%99%EB%AC%BC%EB%B3%91%EC%9B%90/" target="_blank" class="btn btn-secondary btn-full map-link-btn">
+              📍 내 주변 24시 동물병원 검색 (구글 지도)
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-footer flex-column">
+        <button id="btn-restart" class="btn btn-primary btn-large btn-full">처음부터 다시 하기</button>
+        <p class="disclaimer-bottom">
+          <strong>면책 고지:</strong> 본 서비스는 증상을 기반으로 통계적인 가능성을 보여주는 자가진단 보조 도구입니다. 실제 수의사의 진료와 검사를 대체할 수 없으므로, 증상이 지속되거나 심각해지면 반드시 가까운 동물병원을 방문하여 적절한 치료를 받으시길 바랍니다.
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

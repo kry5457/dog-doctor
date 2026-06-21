@@ -1,0 +1,1367 @@
+/* dog-doctor/style.css */
+
+/* 1. Global Reset & Theme Variables */
+:root {
+  --font-main: 'Noto Sans KR', sans-serif;
+  --font-eng: 'Outfit', sans-serif;
+
+  /* Light Theme Colors (Pastel/Mint based) */
+  --primary-color: #2EC4B6;
+  --primary-hover: #25A196;
+  --primary-light: #EBFBF9;
+  --secondary-color: #FF9F1C;
+  --secondary-hover: #E08510;
+  --secondary-light: #FFF8EE;
+  
+  --danger-red: #FF5A5F;
+  --danger-light: #FFEBEB;
+  --warning-yellow: #FFB020;
+  --warning-light: #FFF8E6;
+  --safe-green: #38E5D6;
+  --safe-light: #EBFBF9;
+
+  --bg-app: #F4F6F9;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --text-main: #2B2D42;
+  --text-muted: #7F8C8D;
+  --border-color: #E2E8F0;
+  --border-active: #2EC4B6;
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 16px 32px rgba(46, 196, 182, 0.12);
+  
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 24px;
+}
+
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* 2. Responsive Web App Shell (Mobile-first Wrapper) */
+.app-container {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 481px) {
+  .app-container {
+    min-height: 900px;
+    height: 92vh;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+  }
+}
+
+
+
+/* 3. Screen Structure */
+.screen {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.screen.active {
+  display: flex;
+}
+
+.screen-content {
+  flex-grow: 1;
+  padding: 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.screen-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.screen-footer {
+  padding: 20px 24px 30px;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 4. Navigation & Headers */
+.btn-back {
+  background: none;
+  border: none;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  color: var(--text-main);
+}
+
+.btn-back:hover {
+  background-color: var(--bg-secondary);
+}
+
+.chevron-left {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.progress-bar-container {
+  flex-grow: 1;
+  height: 6px;
+  background-color: var(--border-color);
+  border-radius: 3px;
+  margin: 0 16px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.step-indicator {
+  font-family: var(--font-eng);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.section-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.section-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+/* 5. UI Elements: Buttons & Badges */
+.btn {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--border-radius-md);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 24px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 196, 182, 0.25);
+}
+
+.btn-primary:disabled {
+  background-color: var(--border-color);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: var(--primary-light);
+  color: var(--primary-hover);
+  border: 1px solid rgba(46, 196, 182, 0.15);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-large {
+  padding: 16px 30px;
+  font-size: 1.05rem;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.flex-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.badge-puppy { background-color: #E1F5FE; color: #0288D1; }
+.badge-adult { background-color: #E8F5E9; color: #388E3C; }
+.badge-senior { background-color: #FFF3E0; color: #F57C00; }
+
+.badge-urgency-safe { background-color: var(--primary-light); color: var(--primary-color); }
+.badge-urgency-warning { background-color: var(--warning-light); color: var(--warning-yellow); }
+.badge-urgency-emergency { background-color: var(--danger-light); color: var(--danger-red); }
+
+/* 6. Form elements */
+.form-group {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.form-label .required {
+  color: var(--danger-red);
+}
+
+/* Custom Search & Autocomplete */
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding: 14px 14px 14px 40px;
+  border-radius: var(--border-radius-md);
+  border: 1.5px solid var(--border-color);
+  font-family: var(--font-main);
+  font-size: 0.98rem;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+}
+
+.search-input-wrapper input:focus {
+  outline: none;
+  border-color: var(--border-active);
+  box-shadow: 0 0 0 3px rgba(46, 196, 182, 0.15);
+}
+
+.btn-clear {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.btn-clear.hidden {
+  display: none;
+}
+
+/* Autocomplete list */
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  margin-top: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+  list-style: none;
+}
+
+.autocomplete-list.hidden {
+  display: none;
+}
+
+.autocomplete-list li {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.autocomplete-list li:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-list li:hover {
+  background-color: var(--bg-secondary);
+  color: var(--primary-color);
+}
+
+/* Slider and Age selection */
+.age-toggle-wrapper {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.btn-toggle {
+  flex-grow: 1;
+  background-color: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  padding: 10px;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-main);
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+.btn-toggle.active {
+  background-color: var(--primary-light);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.slider-container {
+  margin: 16px 0 20px;
+}
+
+.custom-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+  background: var(--border-color);
+  -webkit-appearance: none;
+}
+
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(46, 196, 182, 0.4);
+  transition: transform 0.1s ease;
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.slider-values {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.highlight-val {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-family: var(--font-eng);
+}
+
+.info-badge-box {
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-sm);
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Weight input */
+.weight-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.weight-input-wrapper input {
+  width: 100%;
+  padding: 14px 44px 14px 16px;
+  border-radius: var(--border-radius-md);
+  border: 1.5px solid var(--border-color);
+  font-size: 1rem;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+}
+
+.weight-input-wrapper input:focus {
+  outline: none;
+  border-color: var(--border-active);
+}
+
+.weight-input-wrapper .unit {
+  position: absolute;
+  right: 18px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-family: var(--font-eng);
+}
+
+.info-badge-box.hidden {
+  display: none !important;
+}
+
+/* 7. Home Screen Custom styling */
+.brand-header {
+  text-align: center;
+  padding: 40px 20px 20px;
+}
+
+.logo-emoji {
+  font-size: 3.2rem;
+  display: block;
+  margin-bottom: 12px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+.brand-title {
+  font-family: var(--font-eng);
+  font-weight: 900;
+  font-size: 2.2rem;
+  color: var(--primary-color);
+  letter-spacing: -0.5px;
+}
+
+.brand-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.home-hero {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.hero-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-main);
+  max-width: 320px;
+  margin-top: 24px;
+}
+
+.disclaimer-text {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* Cute Face Graphic Animation */
+.cute-dog-graphic {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  background-color: var(--primary-light);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dog-face {
+  position: relative;
+  width: 76px;
+  height: 64px;
+  background-color: #E2E8F0;
+  border-radius: 38px 38px 32px 32px;
+}
+
+
+
+.dog-ear {
+  position: absolute;
+  top: 30px;
+  width: 24px;
+  height: 48px;
+  background-color: #CBD5E1;
+  border-radius: 12px;
+}
+
+
+
+.dog-ear.left {
+  left: 20px;
+  transform: rotate(20deg);
+  border-radius: 12px 6px 12px 12px;
+}
+
+.dog-ear.right {
+  right: 20px;
+  transform: rotate(-20deg);
+  border-radius: 6px 12px 12px 12px;
+}
+
+.dog-eye {
+  position: absolute;
+  top: 22px;
+  width: 8px;
+  height: 8px;
+  background-color: #1E293B;
+  border-radius: 50%;
+}
+
+
+
+.dog-eye.left { left: 18px; }
+.dog-eye.right { right: 18px; }
+
+.dog-nose {
+  position: absolute;
+  top: 34px;
+  left: calc(50% - 7px);
+  width: 14px;
+  height: 9px;
+  background-color: #0F172A;
+  border-radius: 6px 6px 8px 8px;
+}
+
+
+
+.dog-mouth {
+  position: absolute;
+  top: 45px;
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 6px;
+  border: 1.5px solid #0F172A;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+}
+
+
+
+/* 8. Dog Silhouette Screen Styling */
+.silhouette-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm) inset;
+}
+
+.dog-silhouette {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+}
+
+.silhouette-part {
+  fill: #CBD5E1;
+  stroke: var(--bg-primary);
+  stroke-width: 3px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+
+.silhouette-part:hover {
+  fill: var(--primary-light);
+}
+
+.silhouette-part.active {
+  fill: var(--primary-color) !important;
+  stroke: var(--primary-hover);
+  filter: drop-shadow(0 4px 8px rgba(46, 196, 182, 0.3));
+}
+
+.dog-detail {
+  fill: var(--bg-primary);
+  pointer-events: none;
+}
+
+.part-indicator-text {
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-top: 10px;
+  color: var(--text-muted);
+}
+
+#current-part-name {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+/* Tabs list */
+.parts-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+.parts-tabs::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Chrome/Safari */
+}
+
+.btn-tab {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+.btn-tab:hover {
+  border-color: var(--primary-color);
+}
+
+.btn-tab.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* Symptoms Grid */
+.symptoms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 360px) {
+  .symptoms-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.symptom-card {
+  background-color: var(--bg-primary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.symptom-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.symptom-card.selected {
+  border-color: var(--primary-color);
+  background-color: var(--primary-light);
+  box-shadow: 0 4px 12px rgba(46, 196, 182, 0.08);
+}
+
+.symptom-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.symptom-emoji {
+  font-size: 1.3rem;
+  margin-right: 8px;
+}
+
+.symptom-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.symptom-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.card-checkbox {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-color);
+  background-color: var(--bg-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.symptom-card.selected .card-checkbox {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+}
+
+.symptom-card.selected .card-checkbox::after {
+  content: "✓";
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+/* Custom symptom direct inputs */
+.custom-symptom-group {
+  margin-top: 32px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 24px;
+}
+
+.custom-symptom-wrapper {
+  display: flex;
+  gap: 8px;
+}
+
+.custom-symptom-wrapper input {
+  flex-grow: 1;
+  padding: 12px 16px;
+  border-radius: var(--border-radius-md);
+  border: 1.5px solid var(--border-color);
+  font-size: 0.95rem;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+}
+
+.custom-symptom-wrapper input:focus {
+  outline: none;
+  border-color: var(--border-active);
+}
+
+.custom-symptom-wrapper .btn {
+  width: auto;
+  white-space: nowrap;
+}
+
+.custom-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.custom-tag {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-remove-tag {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.btn-remove-tag:hover {
+  color: var(--danger-red);
+}
+
+.selected-count-badge {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.selected-count-badge strong {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  font-family: var(--font-eng);
+}
+
+/* 9. Symptom Details Input Screen (Severity / Duration) */
+.symptoms-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail-item-box {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 20px;
+}
+
+.detail-item-title-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.detail-item-emoji {
+  font-size: 1.3rem;
+  margin-right: 8px;
+}
+
+.detail-item-name {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.detail-option-group {
+  margin-bottom: 16px;
+}
+
+.detail-option-group:last-child {
+  margin-bottom: 0;
+}
+
+.detail-group-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.detail-buttons-row {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-detail-choice {
+  flex-grow: 1;
+  flex-basis: 0;
+  background-color: var(--bg-primary);
+  border: 1.5px solid var(--border-color);
+  padding: 10px 6px;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.15s ease;
+}
+
+.btn-detail-choice:hover {
+  border-color: var(--primary-color);
+}
+
+.btn-detail-choice.active {
+  background-color: var(--primary-color);
+  color: #FFFFFF;
+  border-color: var(--primary-color);
+  font-weight: 700;
+}
+
+/* Colors for active severity options specifically */
+.severity-group .btn-detail-choice[data-val="light"].active {
+  background-color: #2EC4B6;
+  border-color: #2EC4B6;
+}
+.severity-group .btn-detail-choice[data-val="medium"].active {
+  background-color: #FF9F1C;
+  border-color: #FF9F1C;
+}
+.severity-group .btn-detail-choice[data-val="severe"].active {
+  background-color: #FF5A5F;
+  border-color: #FF5A5F;
+}
+
+/* 10. Diagnosing Loading Page */
+#screen-loading {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.loading-content {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pulse-loader {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 30px;
+}
+
+.loader-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 5px solid var(--primary-light);
+  border-top-color: var(--primary-color);
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.loader-dog-emoji {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.2rem;
+  animation: heartbeat 1.2s infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes heartbeat {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  30% { transform: translate(-50%, -50%) scale(1.15); }
+  60% { transform: translate(-50%, -50%) scale(1); }
+}
+
+.loading-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.loading-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 300px;
+}
+
+/* 11. Diagnosis Results Screen */
+.emergency-banner {
+  background-color: var(--danger-light);
+  border-bottom: 2px solid var(--danger-red);
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+.emergency-banner.hidden {
+  display: none;
+}
+
+.banner-icon {
+  font-size: 1.5rem;
+  animation: flash 1s infinite alternate;
+}
+
+@keyframes flash {
+  0% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+.banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.banner-text strong {
+  color: var(--danger-red);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.banner-text span {
+  font-size: 0.84rem;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+.result-top-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.badge-urgency-container {
+  margin-left: auto;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.badge-urgency-container .badge {
+  font-size: 0.88rem;
+  padding: 6px 12px;
+}
+
+.pet-summary-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.pet-icon {
+  font-size: 1.2rem;
+}
+
+.result-section {
+  margin-bottom: 32px;
+}
+
+.result-section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  border-left: 4px solid var(--primary-color);
+  padding-left: 8px;
+}
+
+/* Disease Cards */
+.disease-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.disease-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.disease-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+}
+
+.disease-card.level-emergency::before { background-color: var(--danger-red); }
+.disease-card.level-warning::before { background-color: var(--warning-yellow); }
+.disease-card.level-safe::before { background-color: var(--primary-color); }
+
+.disease-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.disease-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.disease-match-badge {
+  background-color: var(--bg-secondary);
+  color: var(--text-main);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+}
+
+.disease-match-badge strong {
+  color: var(--primary-color);
+  font-weight: 800;
+}
+
+.disease-card-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.no-disease-card {
+  text-align: center;
+  padding: 30px;
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Coping Grid Do & Dont */
+.coping-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.coping-card {
+  border-radius: var(--border-radius-md);
+  padding: 18px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-do {
+  background-color: var(--primary-light);
+  border-color: rgba(46, 196, 182, 0.15);
+}
+
+.card-dont {
+  background-color: var(--danger-light);
+  border-color: rgba(255, 90, 95, 0.15);
+}
+
+.coping-header {
+  font-size: 0.98rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.card-do .coping-header { color: #1E8278; }
+.card-dont .coping-header { color: #BA3C40; }
+
+.coping-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.coping-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.coping-item-main {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-why {
+  background: none;
+  border: none;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.card-do .btn-why { background-color: rgba(46, 196, 182, 0.15); color: #1E8278; }
+.card-dont .btn-why { background-color: rgba(255, 90, 95, 0.15); color: #BA3C40; }
+
+.coping-item-detail {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  padding: 8px 10px;
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-sm);
+  margin-top: 4px;
+  display: none;
+  animation: slideDown 0.2s ease-out;
+}
+
+.coping-item-detail.active {
+  display: block;
+}
+
+/* Vet Summary block */
+.vet-summary-box {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 16px;
+}
+
+.vet-textarea {
+  width: 100%;
+  height: 120px;
+  padding: 12px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: monospace, var(--font-main);
+  font-size: 0.82rem;
+  resize: none;
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+
+.vet-textarea:focus {
+  outline: none;
+}
+
+.disclaimer-bottom {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  text-align: justify;
+}
+
+/* Toast popup */
+.toast {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background-color: rgba(15, 23, 42, 0.9);
+  color: #FFFFFF;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 12. Hospital Finder Section */
+.hospital-find-box {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 20px;
+}
+
+.hospital-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.map-link-btn {
+  text-decoration: none;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
